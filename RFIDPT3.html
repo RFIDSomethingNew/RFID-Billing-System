@@ -1,0 +1,544 @@
+<html>
+ <head>
+  <title>
+   RFID Billing App
+  </title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .header i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .header nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .header nav a {
+            color: white;
+            margin-left: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .container {
+            padding: 10px;
+        }
+        .section {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .section p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            text-align: center;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .cart-item .details {
+            flex-grow: 1;
+        }
+        .cart-item .details p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .cart-item .remove {
+            color: red;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .total {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .checkout-btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+            width: 100%;
+        }
+        .profile-section, .payment-section, .order-history-section {
+            display: none;
+        }
+        form div {
+            margin-bottom: 10px;
+        }
+        form label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-photo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .profile-photo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .profile-photo input {
+            display: none;
+        }
+        .profile-photo label {
+            cursor: pointer;
+            color: #1a73e8;
+            font-size: 14px;
+        }
+        .home-section {
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .home-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .home-section p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .home-section .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .home-section .feature {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+        .home-section .feature h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .home-section .feature p {
+            font-size: 14px;
+        }
+        .order-history {
+            margin-top: 20px;
+        }
+        .order-history .order {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .order-history .order h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        .order-history .order p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+  </style>
+ </head>
+ <body>
+  <div class="header">
+   <h1>
+    <i class="fas fa-wifi"></i>
+    RFID Billing App
+   </h1>
+   <nav>
+    <a href="#" onclick="showSection('home-section')">
+     Home
+    </a>
+    <a href="#" onclick="showSection('cart-section')">
+     Cart
+    </a>
+    <a href="#" onclick="showSection('profile-section')">
+     Profile
+    </a>
+   </nav>
+  </div>
+  <div class="container">
+   <div class="section home-section" id="home-section">
+    <h2>
+     Welcome to RFID Billing App
+    </h2>
+    <p>
+     Use your mobile device to scan the QR code of the store you are in.
+    </p>
+    <button class="btn" onclick="requestCameraAccess('qr')">
+     <i class="fas fa-qrcode">
+     </i>
+     Scan QR Code
+    </button>
+    <div class="features">
+     <div class="feature">
+      <h3>
+       Easy to Use
+      </h3>
+      <p>
+       Scan RFID tags and QR codes with ease.
+      </p>
+     </div>
+     <div class="feature">
+      <h3>
+       Secure Payments
+      </h3>
+      <p>
+       Pay securely using card or UPI.
+      </p>
+     </div>
+     <div class="feature">
+      <h3>
+       Track Orders
+      </h3>
+      <p>
+       Keep track of your orders and history.
+      </p>
+     </div>
+    </div>
+   </div>
+   <div class="section cart-section" id="cart-section">
+    <h2>
+     Your Cart
+    </h2>
+    <p>
+     Store: RFIDNO1STORE
+    </p>
+    <button class="btn" onclick="requestCameraAccess('rfid')">
+     <i class="fas fa-rss">
+     </i>
+     Scan RFID Tag
+    </button>
+    <div class="cart-item" id="item1">
+     <img alt="Coca Cola bottle" height="50" src="https://storage.googleapis.com/a1aa/image/LYhoFo9IMbY9KZ11vrvev7vWDS8zsYI1kHEsmqxTQv7JlrfTA.jpg" width="50"/>
+     <div class="details">
+      <p>
+       Coca Cola
+      </p>
+      <p>
+       Rs.50.00
+      </p>
+     </div>
+     <div class="remove" onclick="removeItem('item1')">
+      Remove
+     </div>
+    </div>
+    <div class="cart-item" id="item2">
+     <img alt="Pepsi bottle" height="50" src="https://storage.googleapis.com/a1aa/image/pPneLzPOYJQEEayfRzjOUKGhUGxePRbMxsBa0YJFU0BrUuePB.jpg" width="50"/>
+     <div class="details">
+      <p>
+       Pepsi
+      </p>
+      <p>
+       Rs.45.00
+      </p>
+     </div>
+     <div class="remove" onclick="removeItem('item2')">
+      Remove
+     </div>
+    </div>
+    <div class="cart-item" id="item3">
+     <img alt="Water bottle" height="50" src="https://storage.googleapis.com/a1aa/image/R2it91ISIcZ2MBSUKcmSyJ9y1HZDlqSwSrTzL7W7gjZky1fJA.jpg" width="50"/>
+     <div class="details">
+      <p>
+       Water
+      </p>
+      <p>
+       Rs.20.00
+      </p>
+     </div>
+     <div class="remove" onclick="removeItem('item3')">
+      Remove
+     </div>
+    </div>
+    <div class="total" id="total">
+     Total: Rs.115.00
+    </div>
+    <button class="checkout-btn" onclick="showSection('payment-section')">
+     Checkout
+    </button>
+   </div>
+   <div class="section profile-section" id="profile-section">
+    <h2>
+     Profile
+    </h2>
+    <form onsubmit="saveProfile(event)">
+     <div class="profile-photo">
+      <img alt="Profile Photo" height="50" id="profile-photo-preview" src="https://storage.googleapis.com/a1aa/image/0nBBNAwerJUSF6mgzffFKxffbvJgZheVeKW9qt9vxnQ9SZzfTA.jpg" width="50"/>
+      <label for="profile-photo">
+       Change Photo
+      </label>
+      <input accept="image/*" id="profile-photo" name="profile-photo" onchange="previewProfilePhoto(event)" type="file"/>
+     </div>
+     <div>
+      <label for="name">
+       Name:
+      </label>
+      <input id="name" name="name" type="text"/>
+     </div>
+     <div>
+      <label for="mobile">
+       Mobile Number:
+      </label>
+      <input id="mobile" name="mobile" type="text"/>
+     </div>
+     <button class="btn" type="submit">
+      Save
+     </button>
+    </form>
+    <div class="order-history">
+     <h2>
+      Order History
+     </h2>
+     <div class="order">
+      <h3>
+       Order #1
+      </h3>
+      <p>
+       Store: RFIDNO1STORE
+      </p>
+      <p>
+       Total Amount: Rs.115.00
+      </p>
+      <p>
+       Items:
+      </p>
+      <ul>
+       <li>
+        Coca Cola - RFID: 1234567890
+       </li>
+       <li>
+        Pepsi - RFID: 0987654321
+       </li>
+       <li>
+        Water - RFID: 1122334455
+       </li>
+      </ul>
+     </div>
+     <div class="order">
+      <h3>
+       Order #2
+      </h3>
+      <p>
+       Store: RFIDNO1STORE
+      </p>
+      <p>
+       Total Amount: Rs.200.00
+      </p>
+      <p>
+       Items:
+      </p>
+      <ul>
+       <li>
+        Chips - RFID: 2233445566
+       </li>
+       <li>
+        Juice - RFID: 3344556677
+       </li>
+       <li>
+        Biscuits - RFID: 4455667788
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <div class="section payment-section" id="payment-section">
+    <h2>
+     Payment Details
+    </h2>
+    <form>
+     <div>
+      <label for="payment-method">
+       Payment Method:
+      </label>
+      <select id="payment-method" name="payment-method">
+       <option value="card">
+        Card
+       </option>
+       <option value="upi">
+        UPI
+       </option>
+      </select>
+     </div>
+     <div id="card-details">
+      <div>
+       <label for="card-number">
+        Card Number:
+       </label>
+       <input id="card-number" name="card-number" type="text"/>
+      </div>
+      <div>
+       <label for="expiry-date">
+        Expiry Date:
+       </label>
+       <input id="expiry-date" name="expiry-date" type="text"/>
+      </div>
+      <div>
+       <label for="cvv">
+        CVV:
+       </label>
+       <input id="cvv" name="cvv" type="text"/>
+      </div>
+     </div>
+     <div id="upi-details" style="display: none;">
+      <div>
+       <label for="upi-id">
+        UPI ID:
+       </label>
+       <input id="upi-id" name="upi-id" type="text"/>
+      </div>
+     </div>
+     <button class="btn" type="submit">
+      Pay Rs.115.00
+     </button>
+    </form>
+   </div>
+  </div>
+  <script>
+   function requestCameraAccess(type) {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then(function(stream) {
+                        // Handle the stream for QR code or RFID tag scanning
+                        if (type === 'qr') {
+                            alert('Camera access granted. Ready to scan QR code.');
+                        } else if (type === 'rfid') {
+                            alert('Camera access granted. Ready to scan RFID tag.');
+                        }
+                    })
+                    .catch(function(err) {
+                        alert('Camera access denied: ' + err);
+                    });
+            } else {
+                alert('Camera access is not supported by your browser.');
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(function(section) {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        document.getElementById('payment-method').addEventListener('change', function() {
+            var cardDetails = document.getElementById('card-details');
+            var upiDetails = document.getElementById('upi-details');
+            if (this.value === 'card') {
+                cardDetails.style.display = 'block';
+                upiDetails.style.display = 'none';
+            } else {
+                cardDetails.style.display = 'none';
+                upiDetails.style.display = 'block';
+            }
+        });
+
+        function removeItem(itemId) {
+            var item = document.getElementById(itemId);
+            item.parentNode.removeChild(item);
+            updateTotal();
+        }
+
+        function updateTotal() {
+            var total = 0;
+            var items = document.querySelectorAll('.cart-item');
+            items.forEach(function(item) {
+                var price = parseFloat(item.querySelector('.details p:nth-child(2)').textContent.replace('₹', ''));
+                total += price;
+            });
+            document.getElementById('total').textContent = 'Total: ₹' + total.toFixed(2);
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            var name = document.getElementById('name').value;
+            var mobile = document.getElementById('mobile').value;
+            alert('Profile saved: ' + name + ', ' + mobile);
+        }
+
+        function previewProfilePhoto(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('profile-photo-preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Show home section by default
+        showSection('home-section');
+  </script>
+ </body>
+</html>
